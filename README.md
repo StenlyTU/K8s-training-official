@@ -1,20 +1,35 @@
-For any issues please contact stenlytu@gmail.com or create a PR. Tested with K8s version 1.17.4 and kubectl version 1.18.0.
 
-# K8s Training #
+<p align="center">
+  <a href="https://kubernetes.io/" title="Redirect to Kubernetes page">
+    <img src="https://github.com/kubernetes/kubernetes/raw/master/logo/logo.png" width="250" />
+  </a>
+</p>
 
-The goal of this tutorial is to give you good understanding of Kubernetes.
+<p align="center">
+  <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg">
+  <img src="https://img.shields.io/github/issues/StenlyTU/K8s-training-official">
+  <img src="https://img.shields.io/github/stars/StenlyTU/K8s-training-official?style=social">
+  <img src="https://img.shields.io/github/forks/StenlyTU/K8s-training-official?style=social">
+</p>
 
-To achieve this we are going to need running K8s cluster.
+
+# K8s Practice Training 
+
+The goal of this tutorial is to give good understanding of Kubernetes and help preparing you for CKA, CKAD and CKS.
+
+To achieve this you need running Kubernetes cluster.
 
 During the tutorial every user is going to create personal namespace and execute all exercises there.
 
+There are 50+ tasks with increasing difficulty. Tested with K8s version 1.19.2 and kubectl version 1.19.2.
+
 ## K8s learning materials: ##
  
-1. Docker is a must. You can start with the book Docker in Action.
+1. Docker is a must. You can start with the book ***Docker in Action***. The book can be [*downloaded*](https://www.pdfdrive.com/docker-in-action-e34422630.html) from Internet.
 2. Check the free K8s courses in EDX: https://www.edx.org/course/introduction-to-kubernetes
-3. The book Kubernetes in action gives good overview.
-4. Also check for available K8s courses in pluralsight: https://app.pluralsight.com/paths/skill/kubernetes-administration
-5. And ofc https://kubernetes.io/docs/home/
+3. The book ***Kubernetes in action*** gives good general overview. The book can be [*downloaded*](https://github.com/indrabasak/Books/blob/master/Kubernetes%20in%20Action.pdf) from Internet.
+4. For security related topics have a look at ***Container Security by Liz Rice***. The book can be [*downloaded*](https://cdn2.hubspot.net/hubfs/1665891/Assets/Container%20Security%20by%20Liz%20Rice%20-%20OReilly%20Apr%202020.pdf) from Internet.
+4. And ofc https://kubernetes.io/docs/home/
 
 ## Hands-on experience: ##
 Download the kubeconfig file from your cluster and configure kubectl to use it.
@@ -23,28 +38,28 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
 ### Core Concepts ###
 
-1. **Create namespace with your I-USER as a name. All following commands will be run in this namespace if not specified.**
+1. **Create namespace called: practice. All following commands will be run into this namespace if not specified.**
     
     <details><summary>show</summary><p>
 
     ```
-    kubectl create ns i353953
+    kubectl create ns practice
     ```
 
     **Take-away**: always try to use shortnames. To find the shortname of resource run -> *kubectl api-resources | grep namespaces*
 
-2. **Create 2 pods with names nginx1 and nginx2 into your namespace. All of them should have the label app=v1.**
+2. **Create two pods with names nginx1 and nginx2 into your namespace. All of them should have the label app=v1.**
      <details><summary>show</summary><p>
 
-        kubectl run -n i353953 nginx1 --image=nginx --restart=Never --labels=app=v1
-        kubectl run -n i353953 nginx2 --image=nginx --restart=Never --labels=app=v1
+        kubectl run -n practice nginx1 --image=nginx --restart=Never --labels=app=v1
+        kubectl run -n practice nginx2 --image=nginx --restart=Never --labels=app=v1
 
     **Take-away**: Try to learn most important *kubectl run* options which can save you a lot of time and manual work on yaml files.
 
 3. **Change the labels of pod 'nginx2' to be app=v2.**
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 label po nginx2 app=v2 --overwrite
+        kubectl -n practice label po nginx2 app=v2 --overwrite
         
     **Take-away**: use *--overwrite* when changind labels.
 
@@ -58,18 +73,18 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 5. **Remove the nginx pods to clean your namespace.**
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 delete pod nginx{1,2}
+        kubectl -n practice delete pod nginx{1,2}
 
 6. **Create a messaging pod using redis:alpine image with label set to tier=msg. Check pod's labels.**
 
     <details><summary>show</summary><p>
 
-        kubectl run -n i353953 messaging --image redis:alpine -l tier=msg
+        kubectl run -n practice messaging --image redis:alpine -l tier=msg
 
     ```
-    kubectl -n i353953 describe pod messaging| head
+    kubectl -n practice describe pod messaging| head
     Name:         messaging
-    Namespace:    i353953
+    Namespace:    practice
     Priority:     0
     Node:         ip-10-250-13-141.eu-central-1.compute.internal/10.250.13.141
     Start Time:   Sun, 19 Apr 2020 16:25:19 +0300
@@ -86,13 +101,13 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
     <details><summary>show</summary><p>
 
     ```
-    kubectl -n i353953 expose pod messaging --name messaging-service --port 6379
+    kubectl -n practice expose pod messaging --name messaging-service --port 6379
     ```
     
     ```
-    $ kubectl -n i353953 describe svc messaging-service
+    $ kubectl -n practice describe svc messaging-service
     Name:              messaging-service
-    Namespace:         i353953
+    Namespace:         practice
     Labels:            tier=msg
     Annotations:       <none>
     Selector:          tier=msg
@@ -110,8 +125,8 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 run busybox-echo --image=busybox --command -- echo "Hello world"
-        kubectl -n i353953 logs busybox-echo
+        kubectl -n practice run busybox-echo --image=busybox --command -- echo "Hello world"
+        kubectl -n practice logs busybox-echo
 
     **Take-away**: with *--command* we can execute commands from within the container.
 
@@ -119,16 +134,16 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 run nginx-test --image=nginx --env=var1=val1
-        kubectl -n i353953 exec -it nginx-test -- env # should see var1=val1 in the output
+        kubectl -n practice run nginx-test --image=nginx --env=var1=val1
+        kubectl -n practice exec -it nginx-test -- env # should see var1=val1 in the output
 
 ### Deployments ###
 
-10. **Create a deployment named hr-app using the image nginx:1.7.8 with 2 replicas.**
+10. **Create a deployment named hr-app using the image nginx:1.18 with 2 replicas.**
     
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 create deployment hr-app --image=nginx:1.7.8 --dry-run=client -o yaml > deploy.yaml
+        kubectl -n practice create deployment hr-app --image=nginx:1.18 --dry-run=client -o yaml > deploy.yaml
         vi deploy.yaml
 
     ```YAML
@@ -139,7 +154,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
       labels:
         app: hr-app
       name: hr-app
-      namespace: i353953
+      namespace: practice
     spec:
       replicas: 2 # Change to 2
       selector:
@@ -153,7 +168,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
               app: hr-app
         spec:
           containers:
-          - image: nginx:1.7.8
+          - image: nginx:1.18
             name: nginx
             resources: {}
      status: {}
@@ -165,44 +180,44 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 11. **Scale hr-app deployment to 3 replicas.**
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 scale deploy/hr-app --replicas 3
+        kubectl -n practice scale deploy/hr-app --replicas 3
     
     **Take-away**: resource_type/resource_name syntax can also be used.
 
-12. **Update the hr-app image to nginx:1.7.9.**
+12. **Update the hr-app image to nginx:1.19.**
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 set image deploy hr-app nginx=nginx:1.7.9
+        kubectl -n practice set image deploy hr-app nginx=nginx:1.19
 
-    **Take-away**: You can also edit the deployment manually with *kubectl -n i353953 edit deploy/hr-app* 
+    **Take-away**: You can also edit the deployment manually with *kubectl -n practice edit deploy/hr-app* 
 
 13. **Check the rollout history of hr-app and confirm that the replicas are OK.**
      <details><summary>show</summary><p>
 
-        kubectl -n i353953 rollout history deploy hr-app
-        kubectl -n i353953 get deploy hr-app
-        kubectl -n i353953 get rs # check that a new replica set has been created
-        kubectl -n i353953 get po -l app=hr-app
+        kubectl -n practice rollout history deploy hr-app
+        kubectl -n practice get deploy hr-app
+        kubectl -n practice get rs # check that a new replica set has been created
+        kubectl -n practice get po -l app=hr-app
 
-14. **Undo the latest rollout and verify that new pods have the old image (nginx:1.7.8)**
+14. **Undo the latest rollout and verify that new pods have the old image (nginx:1.18)**
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 rollout undo deploy hr-app
-        kubectl -n i353953 get po # select one of the 'Running' pods
-        kubectl -n i353953 describe po hr-app-695f79495-6gfsw | grep -i Image: # should be nginx:1.7.8
+        kubectl -n practice rollout undo deploy hr-app
+        kubectl -n practice get po # select one of the 'Running' pods
+        kubectl -n practice describe po hr-app-695f79495-6gfsw | grep -i Image: # should be nginx:1.18
 15. **Do an update of the deployment with a wrong image nginx:1.91 and check the status.**
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 set image deploy/hr-app nginx=nginx:1.91
-        kubectl -n i353953 rollout status deploy hr-app
-        kubectl -n i353953 get po # you'll see 'ErrImagePull'
+        kubectl -n practice set image deploy/hr-app nginx=nginx:1.91
+        kubectl -n practice rollout status deploy hr-app
+        kubectl -n practice get po # you'll see 'ErrImagePull'
 
-16. **Return the deployment to working state and verify the image is nginx:1.7.9.**
+16. **Return the deployment to working state and verify the image is nginx:1.19.**
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 rollout undo deploy hr-app
-        kubectl -n i353953 describe deploy hr-app | grep Image:
-        kubectl -n i353953 get pods -l app=hr-app
+        kubectl -n practice rollout undo deploy hr-app
+        kubectl -n practice describe deploy hr-app | grep Image:
+        kubectl -n practice get pods -l app=hr-app
 
 ### Scheduling ###
 
@@ -214,7 +229,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     Generate yaml file:
 
-        kubectl -n i353953 run nginx-nodename --image nginx --dry-run=client -o yaml > nodename.yaml
+        kubectl -n practice run nginx-nodename --image nginx --dry-run=client -o yaml > nodename.yaml
 
     Choose one of the nodes(kubectl get nodes) and edit the file:
 
@@ -299,7 +314,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
       labels:
         app: elastic-search
       name: elastic-search
-      namespace: i353953
+      namespace: practice
     spec:
       selector:
         matchLabels:
@@ -368,8 +383,8 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     [ConfigMap documentation](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
 
-        kubectl -n i353953 create configmap my-config --from-literal=key1=val1 --from-literal=key2=val2
-        kubectl -n i353953 get cm my-config -o yaml
+        kubectl -n practice create configmap my-config --from-literal=key1=val1 --from-literal=key2=val2
+        kubectl -n practice get cm my-config -o yaml
 
     **Take-away**: ConfigMap gives you a way to inject configurational data into your application.
 
@@ -380,7 +395,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     Use the documentation to figure out the yaml file.
 
-        kubectl -n i353953 exec -it nginx-opt -- env | grep OPTIONS # should return val5
+        kubectl -n practice exec -it nginx-opt -- env | grep OPTIONS # should return val5
 
     **Take-away**: ConfigMap is namespaced resource.
 
@@ -389,7 +404,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     [Configmap documentation](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap)
 
-        kubectl -n i353953 exec -it nginx-sec -- env | grep var # should return var6=val6\nvar7=val7
+        kubectl -n practice exec -it nginx-sec -- env | grep var # should return var6=val6\nvar7=val7
 
 26. **Create a configMap 'cmvolume' with values 'var8=val8' and 'var9=val9'. Load this as a volume inside an nginx-cm pod on path '/etc/spartaa'. Create the pod and 'ls' into the '/etc/spartaa' directory.**
     <details><summary>show</summary><p>
@@ -398,7 +413,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     *Hints: create the CM and use --dry-run=client to generate the yaml. After that add the corresponding fieds to the yaml.*
 
-        kubectl -n i353953 exec -it nginx-cm -- ls /etc/spartaa # should return var8 var9
+        kubectl -n practice exec -it nginx-cm -- ls /etc/spartaa # should return var8 var9
 
 27. **Create an nginx pod with requests cpu=100m, memory=256Mi and limits cpu=200m, memory=512Mi.**
 
@@ -414,7 +429,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     [Secrets documentation](https://kubernetes.io/docs/concepts/configuration/secret/)
 
-        kubectl -n i353953 create secret generic mysecret --from-literal=password=mypass
+        kubectl -n practice create secret generic mysecret --from-literal=password=mypass
 
     **Take-away**: Secrets are base64 encoded not encrypted -> bXlwYXNz.
 
@@ -452,7 +467,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     [Configure Liveness Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-a-liveness-command)
 
-        kubectl -n i353953 run nginx-live --image=nginx --dry-run=client -o yaml > pod_liveness.yaml
+        kubectl -n practice run nginx-live --image=nginx --dry-run=client -o yaml > pod_liveness.yaml
         vi pod_liveness.yaml
 
     ```YAML
@@ -477,8 +492,8 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
     status: {}
     ```
 
-        kubectl -n i353953 apply -f pod.yaml
-        kubectl -n i353953 describe pod nginx-live
+        kubectl -n practice apply -f pod.yaml
+        kubectl -n practice describe pod nginx-live
 
     **Take-away**: The kubelet uses liveness probes to know when to restart a container.
 
@@ -488,7 +503,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     [Configure Liveness, Readiness Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
 
-        kubectl -n i353953 run nginx-ready --image=nginx --dry-run=client -o yaml --port=80 > pod_readiness.yaml
+        kubectl -n practice run nginx-ready --image=nginx --dry-run=client -o yaml --port=80 > pod_readiness.yaml
     
     Find what needs to be added to the file from the above documentation.
 
@@ -500,13 +515,13 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
         kubectl get nodes -o jsonpath="{.items[*].status.nodeInfo.osImage}"
     
-    You should see: Container Linux by CoreOS 2303.3.0 (Rhyolite)
+    You should see something like that: Container Linux by CoreOS 2303.3.0 (Rhyolite)
 
     **Take-away**: Try to understand the construct of the query.
 
 ### Storage ###
 
-35. **Create a PersistentVolume of 1Gi, called 'myvolume-i353953'. Make it have accessMode of 'ReadWriteOnce' and 'ReadWriteMany', storageClassName 'normal', mounted on hostPath '/etc/foo'. List all PersistentVolume**
+35. **Create a PersistentVolume of 1Gi, called 'myvolume-practice'. Make it have accessMode of 'ReadWriteOnce' and 'ReadWriteMany', storageClassName 'normal', mounted on hostPath '/etc/foo'. List all PersistentVolume**
 
     <details><summary>show</summary><p>
 
@@ -517,7 +532,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
     kind: PersistentVolume
     apiVersion: v1
     metadata:
-      name: myvolume-i353953
+      name: myvolume-practice
     spec:
       storageClassName: normal
       capacity:
@@ -532,17 +547,17 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     **Take-away**: PersistentVolume is not namespaced resource.
 
-36. **Create a PersistentVolumeClaim called 'mypvc-i353953' requesting 400Mi with accessMode of 'ReadWriteOnce' and storageClassName of normal. Check the status of the PersistenVolume.**
+36. **Create a PersistentVolumeClaim called 'mypvc-practice' requesting 400Mi with accessMode of 'ReadWriteOnce' and storageClassName of normal. Check the status of the PersistenVolume.**
 
     <details><summary>show</summary><p>
 
     Use [PersistentVolumeClaim documentation](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolumeclaim) to figure out the correct yaml.
 
-    The status of the PersistentVolume myvolume-i353953 should be bound.
+    The status of the PersistentVolume myvolume-practice should be bound.
 
     **Take-away**: PersistentVolumeClaim is namespaced resource.
 
-37. **Create a busybox pod with command 'sleep 3600'. Mount the PersistentVolumeClaim mypvc-i353953 to '/etc/foo'. Connect to the 'busybox' pod, and copy the '/etc/passwd' file to '/etc/foo/passwd'.**
+37. **Create a busybox pod with command 'sleep 3600'. Mount the PersistentVolumeClaim mypvc-practice to '/etc/foo'. Connect to the 'busybox' pod, and copy the '/etc/passwd' file to '/etc/foo/passwd'.**
 
     <details><summary>show</summary><p>
 
@@ -562,7 +577,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     [Security Context documentation](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)
 
-        kubectl -n i353953 run busybox-user --image=busybox --command sleep 3600 --dry-run=client -o yaml > pod.yaml
+        kubectl -n practice run busybox-user --image=busybox --command sleep 3600 --dry-run=client -o yaml > pod.yaml
         vi pod.yaml
 
     ```YAML
@@ -588,7 +603,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
     status: {}
     ```
 
-        kubectl -n i353953 exec -it busybox-user -- id -u # should return 101
+        kubectl -n practice exec -it busybox-user -- id -u # should return 101
 
 40. **Create the YAML for an nginx pod that has capabilities "NET_ADMIN" and "SYS_TIME".**
 
@@ -596,15 +611,15 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     [Security Context documentation](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
 
-41. **Create a new service account with the name pvviewer-IUSER. Grant this Service account access to list all PersistentVolumes in the cluster by creating an appropriate cluster role called pvviewer-role-IUSER and ClusterRoleBinding called pvviewer-role-binding-IUSER**
+41. **Create a new service account with the name pvviewer-practice. Grant this Service account access to list all PersistentVolumes in the cluster by creating an appropriate cluster role called pvviewer-role-practice and ClusterRoleBinding called pvviewer-role-binding-practice**
 
     <details><summary>show</summary><p>
 
     [RBAC documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
 
-        kubectl create serviceaccount pvviewer-i353953
-        kubectl create clusterrole pvviewr-role-i353953 --resource=pv --verb=list
-        kubectl create clusterrolebinding pvviewer-role-binding-i353953 --clusterrole=pvviewr-role-i353953 --serviceaccount=default:pvviewer-i353953
+        kubectl create serviceaccount pvviewer-practice
+        kubectl create clusterrole pvviewr-role-practice --resource=pv --verb=list
+        kubectl create clusterrolebinding pvviewer-role-binding-practice --clusterrole=pvviewr-role-practice --serviceaccount=default:pvviewer-practice
 
     **Take-away**: Read the documentation and try to understand more for Role, ClusterRole, RoleBinding and ClusterRoleBinding.
 
@@ -614,7 +629,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 run nginx-1 --image=nginx --port=80 --expose
+        kubectl -n practice run nginx-1 --image=nginx --port=80 --expose
     
     Check that both pod and service are created.
 
@@ -624,8 +639,8 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 get svc nginx-1
-        kubectl -n i353953 run busybox-1 --rm --image=busybox -it -- sh
+        kubectl -n practice get svc nginx-1
+        kubectl -n practice run busybox-1 --rm --image=busybox -it -- sh
         / # wget -O- $CLUSTER_IP:80
 
     **Take-away**: ClusterIP is only reachable from within the cluster.
@@ -634,8 +649,8 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     <details><summary>show</summary><p>
 
-        kubectl -n i353953 edit svc nginx-1 # ClusterIP -> NodePort
-        kubectl -n i353953 describe svc nginx-1 # find NodePort
+        kubectl -n practice edit svc nginx-1 # ClusterIP -> NodePort
+        kubectl -n practice describe svc nginx-1 # find NodePort
 
     Create temp busybox pod and execute the following:
 
@@ -667,8 +682,8 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     Apply the above yaml and test with temporary busybox pods.
 
-        kubectl -n i353953 run busybox --image=busybox --rm -it -- wget -O- http://nginx-last:80 --timeout 2 # This should fail
-        kubectl -n i353953 run busybox --image=busybox --rm -it --labels=access=granted -- wget -O- http://nginx-last:80 --timeout 2 # This should work
+        kubectl -n practice run busybox --image=busybox --rm -it -- wget -O- http://nginx-last:80 --timeout 2 # This should fail
+        kubectl -n practice run busybox --image=busybox --rm -it --labels=access=granted -- wget -O- http://nginx-last:80 --timeout 2 # This should work
 
     **Take-away**: With NetworkPolicy you can configure how groups of pods are allowed to communicate with each other.
 
@@ -693,4 +708,4 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
 ## Cleanup ##
 
-    kubectl delete ns i353953
+    kubectl delete ns practice
