@@ -61,7 +61,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
         kubectl -n practice label po nginx2 app=v2 --overwrite
         
-    **Take-away**: use *--overwrite* when changind labels.
+    **Take-away**: use *--overwrite* when **changing** labels.
 
 4. **Get only pods with label 'app=v2' from all namespaces.**
     <details><summary>show</summary><p>
