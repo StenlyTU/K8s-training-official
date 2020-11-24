@@ -69,6 +69,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
         kubectl get pods --all-namespaces=true -l app=v2
 
     **Take-away**: -l can be used to filter resources by labels.
+    **Alternative**: `kubectl get pods -A -l app=v2`
 
 5. **Remove the nginx pods to clean your namespace.**
     <details><summary>show</summary><p>
