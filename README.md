@@ -7,7 +7,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg">
-  <img src="https://img.shields.io/github/issues/StenlyTU/K8s-training-official">
+  <img src="https://img.shields.io/github/issues-pr/StenlyTU/K8s-training-official">
   <img src="https://img.shields.io/github/stars/StenlyTU/K8s-training-official?style=social">
   <img src="https://img.shields.io/github/forks/StenlyTU/K8s-training-official?style=social">
 </p>
