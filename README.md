@@ -69,6 +69,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
         kubectl get pods --all-namespaces=true -l app=v2
 
     **Take-away**: -l can be used to filter resources by labels.
+    
     **Alternative**: `kubectl get pods -A -l app=v2`
 
 5. **Remove the nginx pods to clean your namespace.**
@@ -342,7 +343,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
         kubectl label node <node-name> color=blue
 
-    Generate your own yaml or use this one. There is something wrong with it.
+    Generate your own yaml or use this one. There is something wrong with it(indentation or something is missing).
 
     ```YAML
     apiVersion: apps/v1
@@ -363,7 +364,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
           - image: nginx
             imagePullPolicy: Always
             name: nginx
-        affinity:
+          affinity:
             requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                 - matchExpressions:
