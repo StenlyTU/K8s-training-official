@@ -145,39 +145,9 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
     
     <details><summary>show</summary><p>
 
-        kubectl -n practice create deployment hr-app --image=nginx:1.18 --dry-run=client -o yaml > deploy.yaml
-        vi deploy.yaml
+        kubectl -n practice create deployment hr-app --image=nginx:1.18 --replicas=2
 
-    ```YAML
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      creationTimestamp: null
-      labels:
-        app: hr-app
-      name: hr-app
-      namespace: practice
-    spec:
-      replicas: 2 # Change to 2
-      selector:
-        matchLabels:
-          app: hr-app
-      strategy: {}
-      template:
-        metadata:
-          creationTimestamp: null
-            labels:
-              app: hr-app
-        spec:
-          containers:
-          - image: nginx:1.18
-            name: nginx
-            resources: {}
-     status: {}
-    ```
-        kubectl apply -f deploy.yaml
-
-    **Take-away**: *--dry-run=client* is used to check if the resource can be created. Adding *-o yaml > filename.yaml* redirects the raw output to file.
+    **Take-away**: *--replicas=2* - number of replicas to create, default is 1
 
 11. **Scale hr-app deployment to 3 replicas.**
     <details><summary>show</summary><p>
