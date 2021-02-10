@@ -147,7 +147,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
         kubectl -n practice create deployment hr-app --image=nginx:1.18 --replicas=2
 
-    **Take-away**: *--replicas=2* - number of replicas to create, default is 1
+    **Take-away**: *--replicas=2* is the number of replicas to create, default is 1.
 
 11. **Scale hr-app deployment to 3 replicas.**
     <details><summary>show</summary><p>
@@ -227,6 +227,8 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
     Create the pod and check where the pod was scheduled.
 
     *Hint: Use '-o wide' to check on which node the pod landed.*
+
+    **Take-away**: *--dry-run=client* is used to check if the resource can be created. Adding *-o yaml > filename.yaml* redirects the raw output to file.
 
 18. **Schedule a nginx pod based on node label using nodeSelector.**
 
