@@ -683,3 +683,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 ## Cleanup ##
 
     kubectl delete ns practice
+
+##  Other repos  ##
+
+If you are interested in ***Linux*** have a look here: https://github.com/StenlyTU/LFCS-official
