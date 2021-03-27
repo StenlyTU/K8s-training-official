@@ -686,4 +686,8 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
 ##  Other repos  ##
 
-If you are interested in ***Linux*** have a look here: https://github.com/StenlyTU/LFCS-official
+1. If you are interested in ***Linux*** have a look here: https://github.com/StenlyTU/LFCS-official
+
+2. Linux Foundation LFCE knowledge base: coming soon
+
+:checkered_flag: If you liked the repo please star it :star:
