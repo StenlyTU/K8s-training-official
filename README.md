@@ -337,7 +337,8 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
             imagePullPolicy: Always
             name: nginx
           affinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                 - matchExpressions:
                   - key: color
@@ -591,9 +592,9 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
     [RBAC documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
 
-        kubectl create serviceaccount pvviewer-practice
-        kubectl create clusterrole pvviewr-role-practice --resource=pv --verb=list
-        kubectl create clusterrolebinding pvviewer-role-binding-practice --clusterrole=pvviewr-role-practice --serviceaccount=default:pvviewer-practice
+        kubectl -n practice create serviceaccount pvviewer-practice
+        kubectl -n practice create clusterrole pvviewer-role-practice --resource=pv --verb=list
+        kubectl -n practice create clusterrolebinding pvviewer-role-binding-practice --clusterrole=pvviewer-role-practice --serviceaccount=practice:pvviewer-practice
 
     **Take-away**: Read the documentation and try to understand more for Role, ClusterRole, RoleBinding and ClusterRoleBinding.
 
@@ -646,7 +647,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
     spec:
       podSelector:
         matchLabels:
-          run: nginx-last # selector for the pods
+          app: nginx-last # selector for the pods
       ingress:            # allow ingress traffic
       - from:
         - podSelector:    # from pods
