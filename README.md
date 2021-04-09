@@ -337,8 +337,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
             imagePullPolicy: Always
             name: nginx
           affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
+            requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                 - matchExpressions:
                   - key: color
