@@ -17,7 +17,8 @@ The goal of this tutorial is to give good understanding of Kubernetes and help p
 
 To achieve this you need running Kubernetes cluster.
 
-During the tutorial every user is going to create personal namespace and execute all exercises there.
+During the tutorial every user is going to create a personal namespace and execute all exercises there. Alternatively you can name your current context with the namespace name so you wouldn't have to include it with every command if you wish:
+  <code> kubectl config set-context --current --namespace=practice </code>
 
 There are 50+ tasks with increasing difficulty. Tested with K8s version 1.19.2 and kubectl version 1.19.2.
 
