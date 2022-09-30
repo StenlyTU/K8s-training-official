@@ -319,7 +319,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
 
         kubectl label node <node-name> color=blue
 
-    Generate your own yaml or use this one. There is something wrong with it(indentation or something is missing).
+    Generate your own yaml or use this one. 
 
     ```YAML
     apiVersion: apps/v1
@@ -341,6 +341,7 @@ Download the kubeconfig file from your cluster and configure kubectl to use it.
             imagePullPolicy: Always
             name: nginx
           affinity:
+           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                 - matchExpressions:
